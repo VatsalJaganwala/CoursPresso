@@ -61,8 +61,12 @@
                     if (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_assoc($result);
                         // echo "Query performed successfully!<br>";
-                        echo $row['Password'];
+                        // echo $row['Password'];
                         if($row['Password'] == $password) {
+                            session_start();
+                            $_SESSION['name'] = $row['Name'];
+                            $_SESSION['email'] = $row['Email'];
+                            $_SESSION['StudentId'] = $row['StudentId'];
                             echo "<h1>You have succesfully logged in.</h1><br>";
                         }
                         else {
@@ -70,7 +74,7 @@
                         }    
                     }
                     else{
-                        echo "<h1>Account already exists.</h1><br>";
+                        echo "<h1>Account Does not exists.</h1><br>";
                         }
                 }
                 
