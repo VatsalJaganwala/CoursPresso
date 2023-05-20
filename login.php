@@ -50,15 +50,20 @@
             error_log("Error connecting to database: " . $e->getMessage);
             // echo "<br>";
         }
+        try{
         $email=$_POST["email"];
         $password=$_POST["password"];
-        $password = hash('md5', $password);
+        $password = hash('md5', $password);}
+        catch(Exception $e){};
         try
             {
                 $sql = "SELECT * FROM `logindetails` WHERE Email = '$email'";
                 $result = mysqli_query($conn, $sql);
                 if ($result) {
-                    if (mysqli_num_rows($result) > 0) {
+                  if(!isset($email)){
+                    echo "<h1>You have succesfully logged out.</h1><br>";
+                  }
+                   elseif (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_assoc($result);
                         // echo "Query performed successfully!<br>";
                         // echo $row['Password'];
@@ -67,12 +72,14 @@
                             $_SESSION['name'] = $row['Name'];
                             $_SESSION['email'] = $row['Email'];
                             $_SESSION['StudentId'] = $row['StudentId'];
+                            echo "<h1>Hey, ".$row['Name']."<br></h1>";
                             echo "<h1>You have succesfully logged in.</h1><br>";
                         }
                         else {
                             echo "<h1>Incorrect Email or Password</h1><br>";
                         }    
                     }
+                    
                     else{
                         echo "<h1>Account Does not exists.</h1><br>";
                         }
@@ -89,7 +96,7 @@
 
 
             
-            echo "<script>setTimeout(function() {window.location.href = 'index.html';}, 5000);</script>";
+            echo "<script>setTimeout(function() {window.location.href = 'index.php';}, 5000);</script>";
         
         ?>
         <!-- <h4 id="timer"></h4> -->

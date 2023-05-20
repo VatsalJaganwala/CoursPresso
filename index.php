@@ -25,10 +25,17 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
   <script>
     $(document).ready(function () {
       // hide the login form on page load
       $("#login-form").hide();
+      <?php
+      session_start();
+      if (isset($_SESSION['StudentId'])) {
+        echo "$(\"#signup-form\").hide();";
+      }
+      ?>
 
       // show the login form when the login button is clicked
       $("#login-btn").click(function () {
@@ -43,13 +50,14 @@
       });
     });
   </script>
-  
+
 </head>
 
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-      <a class="navbar-brand" href="index.html"><span>Cours</span>Presso</a>
+      <a class="navbar-brand" href="index.php"><span>Cours</span>Presso</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
         aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="oi oi-menu"></span> Menu
@@ -57,12 +65,44 @@
 
       <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav ml-auto">
+          <!-- <?php
+          if (isset($_SESSION['StudentId'])) {
+            $userName = $_SESSION['name'];
+            echo "<li class\"nav-item\"><a href=\"index.html\" class=\"nav-link\">" . $userName . "</a></li>";
+          }
+          ?> -->
           <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
           <li class="nav-item"><a href="course.html" class="nav-link">Course</a></li>
           <!-- <li class="nav-item"><a href="instructor.html" class="nav-link">Instructor</a></li> -->
           <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
           <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          <?php
+          // session_start();          
+          if (isset($_SESSION['StudentId'])) {
+            echo '<form method="post" action="index.php">';
+            echo '<li class="nav-item" style="display: flex; align-items: center;padding: 100px,0,0,0;">';
+            echo '<button type="submit" name="signout" class="btn btn-secondary" style="margin-top: auto; margin-bottom: auto;">Log out</button>';
+            echo '</li>';
+            echo '</form>';
+          }
+
+          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['signout'])) {
+              // Perform signout actions
+              // For example, you can unset session variables or destroy the session
+              session_unset();
+              session_destroy();
+              // Redirect to the desired page after signout
+              header("Location: login.php");
+              header("Refresh: 1");
+              exit();
+            }
+          }
+          ?>
+
+
+
         </ul>
       </div>
     </div>
@@ -91,18 +131,19 @@
           <class="login-wrap p-4 p-md-5">
             <div id="signup-form" class="login-wrap p-4 p-md-5">
               <h3 class="mb-4">Register Now</h3>
-              <form action="signup.php" method="post"class="signup-form">
+              <form action="signup.php" method="post" class="signup-form">
                 <div class="form-group">
-                  <label class="label" for="name"name="name">Full Name</label>
+                  <label class="label" for="name" name="name">Full Name</label>
                   <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
                 </div>
                 <div class="form-group">
-                  <label class="label" for="email"name="email">Email Address</label>
+                  <label class="label" for="email" name="email">Email Address</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
                 </div>
                 <div class="form-group">
                   <label class="label" for="password" name="password">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                    required>
                 </div>
                 <div class="form-group">
                   <label class="label" for="password">Confirm Password</label>
@@ -115,7 +156,7 @@
               <button class="btn btn-link btn-block mt-2" id="login-btn">Already have an account? Login</button>
             </div>
 
-            <div id="login-form"  class="login-wrap p-4 p-md-5">
+            <div id="login-form" class="login-wrap p-4 p-md-5">
               <h3 class="mb-4">Log In</h3>
               <form action="login.php" method="post" class="login-form">
                 <div class="form-group">
@@ -124,7 +165,8 @@
                 </div>
                 <div class="form-group">
                   <label class="label" for="password">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                    required>
                 </div>
                 <div class="form-group d-flex justify-content-end mt-4">
                   <button type="submit" class="btn btn-primary submit">Log In</button>
@@ -367,10 +409,12 @@
                 <div class="col-md-12 heading-section ftco-animate">
                   <span class="subheading">Unlock Your Future: Compare, Choose, Excel!</span>
                   <h2 class="mb-4">Tired of scrolling through courses?</h2>
-                  <p>We aim to tackle the problem of choosing courses from the many sources available on the internet. Abundance of choices often causes 
-                     confusion leads to inefficiency, especially while trying to learn.
+                  <p>We aim to tackle the problem of choosing courses from the many sources available on the internet.
+                    Abundance of choices often causes
+                    confusion leads to inefficiency, especially while trying to learn.
                   </p>
-                  <p>Well, fret no more! We are here to help. Compare courses within seconds and make an informed choice. Learn without regret!</p>
+                  <p>Well, fret no more! We are here to help. Compare courses within seconds and make an informed
+                    choice. Learn without regret!</p>
                   <p><a href="#" class="btn btn-primary">Get in touch with us</a></p>
                 </div>
               </div>
@@ -672,12 +716,13 @@
         <div class="col-md pt-5">
           <div class="ftco-footer-widget pt-md-5 mb-4">
             <h2 class="ftco-heading-2"> Cours Presso About</h2>
-						<p>CoursePress is a comprehensive course comparison website designed to assist students in making informed decisions about their educational journey. </p>
-						<ul class="ftco-footer-social list-unstyled float-md-left float-lft">
-							<li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
-							<li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
-							<li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
-						</ul>
+            <p>CoursePress is a comprehensive course comparison website designed to assist students in making informed
+              decisions about their educational journey. </p>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft">
+              <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+            </ul>
           </div>
         </div>
         <div class="col-md pt-5">
@@ -698,11 +743,11 @@
             <h2 class="ftco-heading-2">Recent Courses</h2>
             <ul class="list-unstyled">
               <li><a href="#" class="py-2 d-block">Web Development</a></li>
-							<li><a href="#" class="py-2 d-block">Android Development</a></li>
-							<li><a href="#" class="py-2 d-block">Algorithms</a></li>
-							<li><a href="#" class="py-2 d-block">Data Science</a></li>
-							<li><a href="#" class="py-2 d-block">AI & ML</a></li>
-							<li><a href="#" class="py-2 d-block">IOT </a></li>
+              <li><a href="#" class="py-2 d-block">Android Development</a></li>
+              <li><a href="#" class="py-2 d-block">Algorithms</a></li>
+              <li><a href="#" class="py-2 d-block">Data Science</a></li>
+              <li><a href="#" class="py-2 d-block">AI & ML</a></li>
+              <li><a href="#" class="py-2 d-block">IOT </a></li>
             </ul>
           </div>
         </div>
@@ -711,9 +756,11 @@
             <h2 class="ftco-heading-2">Have a Questions?</h2>
             <div class="block-23 mb-3">
               <ul>
-                <li><span class="icon fa fa-map-marker"></span><span class="text">SVIT , Rajupura Village, Vasad, Anand,</span></li>
-								<li><a href="#"><span class="icon fa fa-phone"></span><span class="text"> 02692 274 766</span></a></li>
-								<li><a href="#"><span class="icon fa fa-paper-plane"></span><span class="text">coursepresso@gmail.com</span></a></li>
+                <li><span class="icon fa fa-map-marker"></span><span class="text">SVIT , Rajupura Village, Vasad,
+                    Anand,</span></li>
+                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text"> 02692 274 766</span></a></li>
+                <li><a href="#"><span class="icon fa fa-paper-plane"></span><span
+                      class="text">coursepresso@gmail.com</span></a></li>
               </ul>
             </div>
           </div>
@@ -724,9 +771,11 @@
 
           <p>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;<script>
+            Copyright &copy;
+            <script>
               document.write(new Date().getFullYear());
-            </script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
+            </script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
+            by
             <a href="https://colorlib.com" target="_blank">Colorlib</a>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
           </p>
@@ -741,7 +790,8 @@
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
       <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-        stroke="#F96D00" /></svg></div>
+        stroke="#F96D00" />
+    </svg></div>
 
 
   <script src="js/jquery.min.js"></script>
