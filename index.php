@@ -30,10 +30,12 @@
     $(document).ready(function () {
       // hide the login form on page load
       $("#login-form").hide();
+      $("#signout-button").hide();
       <?php
       session_start();
       if (isset($_SESSION['StudentId'])) {
         echo "$(\"#signup-form\").hide();";
+        echo "$(\"#signout-button\").show();";
       }
       ?>
 
@@ -54,6 +56,7 @@
 </head>
 
 <body>
+  
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
@@ -71,39 +74,13 @@
             echo "<li class\"nav-item\"><a href=\"index.html\" class=\"nav-link\">" . $userName . "</a></li>";
           }
           ?> -->
-          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
           <li class="nav-item"><a href="course.html" class="nav-link">Course</a></li>
           <!-- <li class="nav-item"><a href="instructor.html" class="nav-link">Instructor</a></li> -->
           <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
           <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-          <?php
-          // session_start();          
-          if (isset($_SESSION['StudentId'])) {
-            echo '<form method="post" action="index.php">';
-            echo '<li class="nav-item" style="display: flex; align-items: center;padding: 100px,0,0,0;">';
-            echo '<button type="submit" name="signout" class="btn btn-secondary" style="margin-top: auto; margin-bottom: auto;">Log out</button>';
-            echo '</li>';
-            echo '</form>';
-          }
-
-          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['signout'])) {
-              // Perform signout actions
-              // For example, you can unset session variables or destroy the session
-              session_unset();
-              session_destroy();
-              // Redirect to the desired page after signout
-              header("Location: login.php");
-              header("Refresh: 1");
-              exit();
-            }
-          }
-          ?>
-
-
-
-        </ul>
+          <li class="nav-item " id="signout-button"><a href="signout.php" class="nav-link">Sign Out</a></li></ul>
       </div>
     </div>
   </nav>
@@ -187,7 +164,7 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=web%20development" class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/webdev.jpg);">
             <div class="text w-100 text-center">
               <h3>Web Development</h3>
