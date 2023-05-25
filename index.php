@@ -98,7 +98,7 @@
           <span class="subheading">Welcome to Courspresso</span>
           <h1 class="mb-4">We Are Online Platform that make course selection easy</h1>
           <!-- <p class="caps">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p> -->
-          <p class="mb-0"><a href="#" class="btn btn-primary">Our Course</a> </p>
+          <p class="mb-0"><a href="course.php" class="btn btn-primary">Our Courses</a> </p>
         </div>
       </div>
     </div>
@@ -425,7 +425,7 @@
   </section>
 
 
-  <section class="ftco-section testimony-section bg-light">
+  <!--<section class="ftco-section testimony-section bg-light">
     <div class="overlay" style="background-image: url(images/bg_2.jpg);"></div>
     <div class="container">
       <div class="row pb-4">
@@ -553,7 +553,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section>-->
 
   <section class="ftco-intro ftco-section ftco-no-pb">
     <div class="container">
@@ -561,9 +561,9 @@
         <div class="col-md-12 text-center">
           <div class="img" style="background-image: url(images/bg_4.jpg);">
             <div class="overlay"></div>
-            <h2>We Are StudyLab An Online Learning Center</h2>
-            <p>We can manage your dream building A small river named Duden flows by their place</p>
-            <p class="mb-0"><a href="#" class="btn btn-primary px-4 py-3">Enroll Now</a></p>
+            <h2>This is CoursPresso-a Couse comparison website.</h2>
+            <p>We offer an interactive way to compare courses so you can make the better choice</p>
+            <p class="mb-0"><a href="course.php" class="btn btn-primary px-4 py-3">Enroll Now</a></p>
           </div>
         </div>
       </div>
@@ -575,19 +575,17 @@
       <div class="row d-flex">
         <div class="col-md-6 heading-section pr-md-5 ftco-animate d-flex align-items-center">
           <div class="w-100 mb-4 mb-md-0">
-            <span class="subheading">Welcome to StudyLab</span>
-            <h2 class="mb-4">We Are StudyLab An Online Learning Center</h2>
-            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a
-              paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the
-              blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language
-              ocean.</p>
+            <span class="subheading">Welcome to CoursPresso</span>
+            <h2 class="mb-4">We Are CoursPresso A course comparison website</h2>
+            <p>We offer an interactive way to get rid of the hassle of searching for the course that is just right for you!</p>
+            <p>Abundance of choices often causes confusion and this confusion leads to inefficiency, especially while trying to learn. So we help you tackle this problem. 
+                Just Search courses according to your interest, filter them according to your preference and compare them to find the best deal.</p>
             <div class="d-flex video-image align-items-center mt-md-4">
               <a href="#" class="video img d-flex align-items-center justify-content-center"
                 style="background-image: url(images/about.jpg);">
                 <span class="fa fa-play-circle"></span>
               </a>
-              <h4 class="ml-4">Learn anything from StudyLab, Watch video</h4>
+              <h4 class="ml-4">Learn & Compare any course from CoursPresso, Watch video</h4>
             </div>
           </div>
         </div>
@@ -599,7 +597,7 @@
                 </div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Top Quality Content</h3>
-                  <p>A small river named Duden flows by their place and supplies</p>
+                  <p>We pride ourselves on delivering high-quality content that is carefully curated to meet the needs of our users.</p>
                 </div>
               </div>
             </div>
@@ -609,7 +607,7 @@
                     class="flaticon-instructor"></span></div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Highly Skilled Instructor</h3>
-                  <p>A small river named Duden flows by their place and supplies</p>
+                  <p>We take pride in connecting learners with highly skilled instructors who bring a wealth of expertise and knowledge to their respective courses.</p>
                 </div>
               </div>
             </div>
@@ -618,8 +616,8 @@
                 <div class="icon icon-3 d-flex align-items-center justify-content-center"><span
                     class="flaticon-quiz"></span></div>
                 <div class="media-body">
-                  <h3 class="heading mb-3">World Class &amp; Quiz</h3>
-                  <p>A small river named Duden flows by their place and supplies</p>
+                  <h3 class="heading mb-3">World Class Courses &amp; Quiz</h3>
+                  <p>We offer world-class courses and an engaging quiz platform to enhance your learning experience.</p>
                 </div>
               </div>
             </div>
@@ -629,7 +627,7 @@
                     class="flaticon-browser"></span></div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Get Certified</h3>
-                  <p>A small river named Duden flows by their place and supplies</p>
+                  <p>We offer you the opportunity to enhance your professional credentials and expand your knowledge by earning certifications.</p>
                 </div>
               </div>
             </div>
@@ -640,7 +638,7 @@
   </section>
 
 
-  <section class="ftco-section bg-light">
+  <!--<section class="ftco-section bg-light">
     <div class="container">
       <div class="row justify-content-center pb-4">
         <div class="col-md-12 heading-section text-center ftco-animate">
@@ -706,7 +704,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section>-->
 
 
   <footer class="ftco-footer ftco-no-pt">
@@ -732,7 +730,6 @@
               <li><a href="#" class="py-2 d-block">Legal Help</a></li>
               <li><a href="#" class="py-2 d-block">Services</a></li>
               <li><a href="#" class="py-2 d-block">Privacy and Policy</a></li>
-              <li><a href="#" class="py-2 d-block">Refund Policy</a></li>
               <li><a href="#" class="py-2 d-block">Call Us</a></li>
             </ul>
           </div>
@@ -752,7 +749,7 @@
         </div>
         <div class="col-md pt-5">
           <div class="ftco-footer-widget pt-md-5 mb-4">
-            <h2 class="ftco-heading-2">Have a Questions?</h2>
+            <h2 class="ftco-heading-2">Have a Question?</h2>
             <div class="block-23 mb-3">
               <ul>
                 <li><span class="icon fa fa-map-marker"></span><span class="text">SVIT , Rajupura Village, Vasad,
