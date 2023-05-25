@@ -60,7 +60,7 @@
 					<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home <i
 									class="fa fa-chevron-right"></i></a></span> <span>courses <i
 								class="fa fa-chevron-right"></i></span></p>
-					
+
 					<?php
 					if (isset($_GET['category'])) {
 						$selectedCategory = $_GET['category'];
@@ -169,6 +169,7 @@
 
 
 
+
 						$servername = "localhost";
 						$username = "root";
 						$password = "";
@@ -193,6 +194,7 @@
 								// Loop through each row and display the data
 								foreach ($rows as $row) {
 									// Extract data from the row
+									$courseId = $row['courseId'];
 									$name = $row["name"];
 									$nameUrl = $row["name_url"];
 									$skills = $row["skills"];
@@ -215,7 +217,13 @@
 										$institute = "images/coursera-logo.svg";
 									else
 										$institute = "images/codecademy_logo.webp";
-										$otherDetails = str_replace('Â', '',$otherDetails);
+
+									$otherDetails = str_replace('Â', '', $otherDetails);
+									if (isset($_SESSION['StudentId'])) {
+										$nameUrl ="openCourse.php?courseId=".$courseId. "& url=".$nameUrl;
+										
+									}
+
 
 
 									// HTML template
@@ -292,12 +300,15 @@
 					<div class="ftco-footer-widget pt-md-5 mb-4">
 						<h2 class="ftco-heading-2">Recent Courses</h2>
 						<ul class="list-unstyled">
-							 <li><a href="course.php?category=web%20development" class="py-2 d-block">Web Development</a></li>
-              <li><a href="course.php?category=mobile%20development" class="py-2 d-block">Android Development</a></li>
-              <li><a href="course.php?category=algorithm" class="py-2 d-block">Algorithms</a></li>
-              <li><a href="course.php?category=data%20analysis" class="py-2 d-block">Data Science</a></li>
-              <li><a href="course.php?category=ai" class="py-2 d-block">AI & ML</a></li>
-              <li><a href="course.php?category=cybersecurity" class="py-2 d-block">Cyber Security </a></li>
+							<li><a href="course.php?category=web%20development" class="py-2 d-block">Web Development</a>
+							</li>
+							<li><a href="course.php?category=mobile%20development" class="py-2 d-block">Android
+									Development</a></li>
+							<li><a href="course.php?category=algorithm" class="py-2 d-block">Algorithms</a></li>
+							<li><a href="course.php?category=data%20analysis" class="py-2 d-block">Data Science</a></li>
+							<li><a href="course.php?category=ai" class="py-2 d-block">AI & ML</a></li>
+							<li><a href="course.php?category=cybersecurity" class="py-2 d-block">Cyber Security </a>
+							</li>
 						</ul>
 					</div>
 				</div>

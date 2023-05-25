@@ -1,105 +1,96 @@
-<!DOCTYPE html>
-<html ng-app="courseApp">
-
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-    <style>
-        /* Add your CSS styles here */
-    </style>
-    <script>
-        var app = angular.module('courseApp', []);
-
-        app.controller('courseController', function ($scope, $http) {
-            $scope.sortBy = ''; // Default sort by course name
-            $scope.filterBy = ''; // Default no filter
-
-            
-            // Function to set the sorting option
-            $scope.setSortBy = function (sortOption) {
-                $scope.sortBy = sortOption;
-            };
-
-            // Function to set the filtering option
-            $scope.setFilterBy = function (filterOption) {
-                $scope.filterBy = filterOption;
-            };
-        });
-    </script>
-</head>
-
-<body ng-controller="courseController">
-    <?php
-    // PHP code to fetch data from the database
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "vatsal";
-
-    // Create connection
-    $conn = mysqli_connect($servername, $username, $password, $database);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Fetch course details from the database
-    $sql = "SELECT * FROM `coursedata`";
-    $result = $conn->query($sql);
-    echo "SQL DONE";
-
-    // Store the course details in an array
-    $courses = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $courses[] = $row;
-            
+<?php
+        if (isset($_SESSION['StudentId'])) {
+          
+          // echo "Selected Category: " . $selectedCategory;
+          $studentId = $_SESSION['StudentId'];
+          $sql = "SELECT DISTINCT courseId FROM userhistory WHERE studentId = '$studentId' ORDER BY time DESC LIMIT 6";
         }
-        echo ' Course fetched <br>';
-    }
-    
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "vatsal";
+        try {
+          $conn = mysqli_connect($servername, $username, $password, $database);
+          error_log("Connection established");
+        } catch (Exception $e) {
+          error_log("Error connecting to database: " . $e->$getMessage);
+        }
+        try {
+
+          $result = mysqli_query($conn, $sql);
+          if ($result->num_rows == 0)
+            echo "<h2>NO History Found</h2>";
+          elseif ($result->num_rows > 0) {
+            while ($courseId = $result->fetch_assoc()) {
+              $courseIds[] = $courseId;
+            }
+            foreach ($courseIds as $courseId) {
+              $courseID = $courseId['courseId'];
+              $sql = "SELECT * FROM coursedata WHERE courseId = '$courseID'";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $courseId = $row['courseId'];
+									$name = $row["name"];
+									$nameUrl = $row["name_url"];
+									$skills = $row["skills"];
+									$otherDetails = $row["other_details"];
+									$rating = $row["rating"];
+									$institute = $row["institute"];
+									$instituteName = $row["institute_name"];
+									$type = $row["type"];
+									$category = $row["category"];
+									if ($type != 'Free course')
+										$type = 'See Plans';
+									if (is_numeric($rating) && intval($rating) == $rating)
+										$rating = $rating . " Lessons";
+									elseif ($rating == '0')
+										$rating = null;
+									else
+										$rating = "Rating: " . $rating . "/5";
+									// if($institute =="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZpZXdCb3g9IjAgMCAxMTU1IDE2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiPjxwYXRoIGQ9Ik0xNTkuNzUgODEuNTRjMC00NC40OSAzNi42My04MC40NyA4Mi40My04MC40NyA0Ni4xMiAwIDgyLjc2IDM2IDgyLjc2IDgwLjQ3IDAgNDQuMTYtMzYuNjQgODAuOC04Mi43NiA4MC44LTQ1LjggMC04Mi40My0zNi42OC04Mi40My04MC44em0xMjUuNjEgMGMwLTIyLjI0LTE5LjMtNDEuODctNDMuMTgtNDEuODctMjMuNTUgMC00Mi44NSAxOS42My00Mi44NSA0MS44NyAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yIDIzLjkyIDAgNDMuMTgtMTkuNjMgNDMuMTgtNDIuMnptNzA1LjYzIDEuMzFjMC00OC43NCAzOS41OC04MS43OCA3NS41Ny04MS43OCAyNC41MyAwIDM4LjYgNy41MiA0OC4wOCAyMS45MmwzLjc3LTE5aDM2Ljc5djE1NS40aC0zNi43OWwtNC43NS0xNmMtMTAuNzkgMTEuNzgtMjQuMjEgMTktNDcuMSAxOS0zNS4zMy0uMDUtNzUuNTctMzEuMTMtNzUuNTctNzkuNTR6bTEyNS42MS0uMzNjLS4wOS0yMy41MjctMTkuNDctNDIuODM1LTQzLTQyLjgzNS0yMy41OSAwLTQzIDE5LjQxMS00MyA0M3YuMTY1YzAgMjEuNTkgMTkuMyA0MC44OSA0Mi44NiA0MC44OSAyMy44NSAwIDQzLjE0LTE5LjMgNDMuMTQtNDEuMjJ6TTk0NS43OCAyMlY0aC00MC4yM3YxNTUuMzloNDAuMjNWNzUuNjZjMC0yNS4xOSAxMi40NC0zOC4yNyAzNC0zOC4yNyAxLjQzIDAgMi43OS4xIDQuMTIuMjNMOTkxLjM2LjExYy0yMC45Ny4xMS0zNi4xNyA3LjMtNDUuNTggMjEuODl6bS00MDQuMjcuMDF2LTE4bC00MC4yMy4wOS4zNCAxNTUuMzcgNDAuMjMtLjA5LS4yMi04My43MmMtLjA2LTI1LjE4IDEyLjM1LTM4LjI5IDMzLjkzLTM4LjM0IDEuMzc2LjAwNCAyLjc1Mi4wODEgNC4xMi4yM0w1ODcuMSAwYy0yMSAuMTctMzYuMjIgNy4zOS00NS41OSAyMi4wMXpNMzM4Ljg4IDk5LjJWNC4wMWg0MC4yMlY5NC4zYzAgMTkuOTUgMTEuMTIgMzEuNzMgMzAuNDIgMzEuNzMgMjEuNTkgMCAzNC0xMy4wOSAzNC0zOC4yOFY0LjAxaDQwLjI0djE1NS4zOGgtNDAuMjF2LTE4Yy05LjQ4IDE0LjcyLTI0Ljg2IDIxLjkyLTQ2LjEyIDIxLjkyLTM1Ljk4LjAxLTU4LjU1LTI2LjE2LTU4LjU1LTY0LjExem0zOTEuNzQtMTcuNDhjLjA5LTQzLjUxIDMxLjIzLTgwLjc0IDgwLjYyLTgwLjY1IDQ1LjguMDkgNzguMTEgMzYuNzggNzggODAgLjAxIDQuMjczLS4zMyA4LjU0LTEgMTIuNzZsLTExOC40MS0uMjJjNC41NCAxOC42NSAxOS44OSAzMi4wOSA0My4xMiAzMi4xNCAxNC4wNiAwIDI5LjEyLTUuMTggMzguMy0xNi45NGwyNy40NCAyMmMtMTQuMTEgMTkuOTMtMzkgMzEuNjYtNjUuNDggMzEuNjEtNDYuNzUtLjE2LTgyLjY3LTM1LjIzLTgyLjU5LTgwLjd6bTExOC4xMi0xNi4xNGMtMi4yNi0xNS43LTE4LjU5LTI3Ljg0LTM3Ljg5LTI3Ljg3LTE4LjY1IDAtMzMuNzEgMTEuMDYtMzkuNjMgMjcuNzNsNzcuNTIuMTR6bS0yNjEuNCA1OS45NGwzNS43Ni0xOC43MmM1LjkxIDEyLjgxIDE3LjczIDIwLjM2IDM0LjQ4IDIwLjM2IDE1LjQzIDAgMjEuMzQtNC45MiAyMS4zNC0xMS44MiAwLTI1LTg0LjcxLTkuODUtODQuNzEtNjcgMC0zMS41MiAyNy41OC00OC4yNiA2MS43Mi00OC4yNiAyNS45NCAwIDQ4LjkyIDExLjQ5IDYxLjQgMzIuODNsLTM1LjQ0IDE4Ljc1Yy01LjI1LTEwLjUxLTE1LjEtMTYuNDItMjcuNTgtMTYuNDItMTIuMTQgMC0xOC4wNiA0LjI3LTE4LjA2IDExLjQ5IDAgMjQuMyA4NC43MSA4Ljg3IDg0LjcxIDY3IDAgMzAuMjEtMjQuNjIgNDguNTktNjQuMzUgNDguNTktMzMuODItLjAzLTU3LjQ2LTExLjE5LTY5LjI3LTM2Ljh6TTAgODEuNTRDMCAzNi43MyAzNi42My43NCA4Mi40My43NGMyNy45NDctLjE5NiA1NC4xODIgMTMuNzM3IDY5LjY3IDM3bC0zNC4zNCAxOS45MmE0Mi45NzIgNDIuOTcyIDAgMDAtMzUuMzMtMTguMzJjLTIzLjU1IDAtNDIuODUgMTkuNjMtNDIuODUgNDIuMiAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yYTQyLjUwMiA0Mi41MDIgMCAwMDM2LjMxLTIwbDM0IDIwLjI4Yy0xNS4zMDcgMjMuOTU1LTQxLjkwMiAzOC40MzEtNzAuMzMgMzguMjhDMzYuNjMgMTYyLjM0IDAgMTI1LjY2IDAgODEuNTR6IiBmaWxsPSIjMDA1NkQyIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=") 
+									if ($instituteName == 'Coursera')
+										$institute = "images/coursera-logo.svg";
+									else
+										$institute = "images/codecademy_logo.webp";
+
+									$otherDetails = str_replace('Â', '', $otherDetails);
+									if (isset($_SESSION['StudentId'])) {
+										$nameUrl ="openCourse.php?courseId=".$courseId. "& url=".$nameUrl;
+										
+									}
 
 
-    // Close the database connection
-    $conn->close();
 
-    // Convert the array to JSON
-    $json_courses = json_encode($courses);
-    echo "<script>var coursesData = $json_courses;</script>";
-    ?>
-    <div>
-        <label>Sort by:</label>
-        <select ng-model="sortBy" ng-change="setSortBy(sortBy)">
-            <option value="name">Course Name</option>
-            <option value="rating">Rating</option>
-            <!-- Add more sorting options as needed -->
-        </select>
-    </div>
-    <div>
-        <label>Filter by:</label>
-        <input type="text" ng-model="filterBy" ng-change="setFilterBy(filterBy)">
-    </div>
-    <div ng-repeat="course in courses | orderBy:sortBy | filter:filterBy" class="project-wrap">
-        <a href="{{course.url}}" class="img" style="background-image: url({course.institute});">
-            <span class="price">{{course.institute}}</span>
-        </a>
-        <div class="text p-4">
-            <h3><a href="{{course.name_url}}">{{course.name}}</a></h3>
-            <!-- <p class="institute">Institute: <span>{{course.institute}}</span></p> -->
-            <p class="description">{{course.skills}}</p>
-            <p class="instructors">Instructors: <span>{{course.other_details}}</span></p>
-            <p class="rating">Rating: <span>{{course.rating}}</span></p>
+									// HTML template
+									$template = '
+									<div class="col-md-4 ftco-animate" >
+										<div class="project-wrap bg-white" style=""border: 1px solid #000";>
+											<a href="%s" class="img" style="background-image: url(%s);">
+												<span class="price">%s</span>
+											</a>
+											<div class="text p-4">
+												<h3><a href="%s">%s</a></h3>
+												<p class="institute"><a href="%s">%s</a></p>
+												<p class="description">%s</p>
+												<p class="otherDetails"><span>%s</span></p>
+												<p class="rating"> <span>%s</span></p>
+												
+											</div>
+										</div>
+									</div>
+									';
 
-        </div>
-    </div>
-    <script>
-        // Assign the fetched data to the AngularJS controller
-        app.controller('courseController', function($scope) {
-            $scope.courses = coursesData;
-        });
-    </script>
+									// Insert dynamic data into the template
+									$html = sprintf($template, $nameUrl, $institute, $type, $nameUrl, $name, $nameUrl, $instituteName, $skills, $otherDetails, $rating);
 
+									// Output the HTML
+									echo $html;
+                }
+              }
+            }
+          }
+        }
+        catch(Exception $e){}
 
-</body>
-
-</html>
+        ?>

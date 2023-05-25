@@ -54,7 +54,7 @@
       });
     });
   </script>
-  
+
 
 </head>
 
@@ -249,97 +249,111 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-1.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-2.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-3.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <?php
+        if (isset($_SESSION['StudentId'])) {
 
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-4.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-5.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 ftco-animate">
-          <div class="project-wrap">
-            <a href="#" class="img" style="background-image: url(images/work-6.jpg);">
-              <span class="price">Software</span>
-            </a>
-            <div class="text p-4">
-              <h3><a href="#">Design for the web with adobe photoshop</a></h3>
-              <p class="advisor">Advisor <span>Tony Garret</span></p>
-              <ul class="d-flex justify-content-between">
-                <li><span class="flaticon-shower"></span>2300</li>
-                <li class="price">$199</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          // echo "Selected Category: " . $selectedCategory;
+          $studentId = $_SESSION['StudentId'];
+          $sql = "SELECT DISTINCT courseId FROM userhistory WHERE studentId = '$studentId' ORDER BY time DESC LIMIT 6";
+          $servername = "localhost";
+          $username = "root";
+          $password = "";
+          $database = "vatsal";
+          try {
+            $conn = mysqli_connect($servername, $username, $password, $database);
+            error_log("Connection established");
+          } catch (Exception $e) {
+            error_log("Error connecting to database: " . $e->$getMessage);
+          }
+          try {
+            $result = mysqli_query($conn, $sql);
+            if ($result->num_rows == 0)
+              echo "<h2>NO History Found</h2>";
+            elseif ($result->num_rows > 0) {
+              while ($courseId = $result->fetch_assoc()) {
+                $courseIds[] = $courseId;
+              }
+              foreach ($courseIds as $courseId) {
+                $courseID = $courseId['courseId'];
+                $sql = "SELECT * FROM coursedata WHERE courseId = '$courseID'";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    $courseId = $row['courseId'];
+                    $name = $row["name"];
+                    $nameUrl = $row["name_url"];
+                    $skills = $row["skills"];
+                    $otherDetails = $row["other_details"];
+                    $rating = $row["rating"];
+                    $institute = $row["institute"];
+                    $instituteName = $row["institute_name"];
+                    $type = $row["type"];
+                    $category = $row["category"];
+                    if ($type != 'Free course')
+                      $type = 'See Plans';
+                    if (is_numeric($rating) && intval($rating) == $rating)
+                      $rating = $rating . " Lessons";
+                    elseif ($rating == '0')
+                      $rating = null;
+                    else
+                      $rating = "Rating: " . $rating . "/5";
+                    // if($institute =="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZpZXdCb3g9IjAgMCAxMTU1IDE2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiPjxwYXRoIGQ9Ik0xNTkuNzUgODEuNTRjMC00NC40OSAzNi42My04MC40NyA4Mi40My04MC40NyA0Ni4xMiAwIDgyLjc2IDM2IDgyLjc2IDgwLjQ3IDAgNDQuMTYtMzYuNjQgODAuOC04Mi43NiA4MC44LTQ1LjggMC04Mi40My0zNi42OC04Mi40My04MC44em0xMjUuNjEgMGMwLTIyLjI0LTE5LjMtNDEuODctNDMuMTgtNDEuODctMjMuNTUgMC00Mi44NSAxOS42My00Mi44NSA0MS44NyAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yIDIzLjkyIDAgNDMuMTgtMTkuNjMgNDMuMTgtNDIuMnptNzA1LjYzIDEuMzFjMC00OC43NCAzOS41OC04MS43OCA3NS41Ny04MS43OCAyNC41MyAwIDM4LjYgNy41MiA0OC4wOCAyMS45MmwzLjc3LTE5aDM2Ljc5djE1NS40aC0zNi43OWwtNC43NS0xNmMtMTAuNzkgMTEuNzgtMjQuMjEgMTktNDcuMSAxOS0zNS4zMy0uMDUtNzUuNTctMzEuMTMtNzUuNTctNzkuNTR6bTEyNS42MS0uMzNjLS4wOS0yMy41MjctMTkuNDctNDIuODM1LTQzLTQyLjgzNS0yMy41OSAwLTQzIDE5LjQxMS00MyA0M3YuMTY1YzAgMjEuNTkgMTkuMyA0MC44OSA0Mi44NiA0MC44OSAyMy44NSAwIDQzLjE0LTE5LjMgNDMuMTQtNDEuMjJ6TTk0NS43OCAyMlY0aC00MC4yM3YxNTUuMzloNDAuMjNWNzUuNjZjMC0yNS4xOSAxMi40NC0zOC4yNyAzNC0zOC4yNyAxLjQzIDAgMi43OS4xIDQuMTIuMjNMOTkxLjM2LjExYy0yMC45Ny4xMS0zNi4xNyA3LjMtNDUuNTggMjEuODl6bS00MDQuMjcuMDF2LTE4bC00MC4yMy4wOS4zNCAxNTUuMzcgNDAuMjMtLjA5LS4yMi04My43MmMtLjA2LTI1LjE4IDEyLjM1LTM4LjI5IDMzLjkzLTM4LjM0IDEuMzc2LjAwNCAyLjc1Mi4wODEgNC4xMi4yM0w1ODcuMSAwYy0yMSAuMTctMzYuMjIgNy4zOS00NS41OSAyMi4wMXpNMzM4Ljg4IDk5LjJWNC4wMWg0MC4yMlY5NC4zYzAgMTkuOTUgMTEuMTIgMzEuNzMgMzAuNDIgMzEuNzMgMjEuNTkgMCAzNC0xMy4wOSAzNC0zOC4yOFY0LjAxaDQwLjI0djE1NS4zOGgtNDAuMjF2LTE4Yy05LjQ4IDE0LjcyLTI0Ljg2IDIxLjkyLTQ2LjEyIDIxLjkyLTM1Ljk4LjAxLTU4LjU1LTI2LjE2LTU4LjU1LTY0LjExem0zOTEuNzQtMTcuNDhjLjA5LTQzLjUxIDMxLjIzLTgwLjc0IDgwLjYyLTgwLjY1IDQ1LjguMDkgNzguMTEgMzYuNzggNzggODAgLjAxIDQuMjczLS4zMyA4LjU0LTEgMTIuNzZsLTExOC40MS0uMjJjNC41NCAxOC42NSAxOS44OSAzMi4wOSA0My4xMiAzMi4xNCAxNC4wNiAwIDI5LjEyLTUuMTggMzguMy0xNi45NGwyNy40NCAyMmMtMTQuMTEgMTkuOTMtMzkgMzEuNjYtNjUuNDggMzEuNjEtNDYuNzUtLjE2LTgyLjY3LTM1LjIzLTgyLjU5LTgwLjd6bTExOC4xMi0xNi4xNGMtMi4yNi0xNS43LTE4LjU5LTI3Ljg0LTM3Ljg5LTI3Ljg3LTE4LjY1IDAtMzMuNzEgMTEuMDYtMzkuNjMgMjcuNzNsNzcuNTIuMTR6bS0yNjEuNCA1OS45NGwzNS43Ni0xOC43MmM1LjkxIDEyLjgxIDE3LjczIDIwLjM2IDM0LjQ4IDIwLjM2IDE1LjQzIDAgMjEuMzQtNC45MiAyMS4zNC0xMS44MiAwLTI1LTg0LjcxLTkuODUtODQuNzEtNjcgMC0zMS41MiAyNy41OC00OC4yNiA2MS43Mi00OC4yNiAyNS45NCAwIDQ4LjkyIDExLjQ5IDYxLjQgMzIuODNsLTM1LjQ0IDE4Ljc1Yy01LjI1LTEwLjUxLTE1LjEtMTYuNDItMjcuNTgtMTYuNDItMTIuMTQgMC0xOC4wNiA0LjI3LTE4LjA2IDExLjQ5IDAgMjQuMyA4NC43MSA4Ljg3IDg0LjcxIDY3IDAgMzAuMjEtMjQuNjIgNDguNTktNjQuMzUgNDguNTktMzMuODItLjAzLTU3LjQ2LTExLjE5LTY5LjI3LTM2Ljh6TTAgODEuNTRDMCAzNi43MyAzNi42My43NCA4Mi40My43NGMyNy45NDctLjE5NiA1NC4xODIgMTMuNzM3IDY5LjY3IDM3bC0zNC4zNCAxOS45MmE0Mi45NzIgNDIuOTcyIDAgMDAtMzUuMzMtMTguMzJjLTIzLjU1IDAtNDIuODUgMTkuNjMtNDIuODUgNDIuMiAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yYTQyLjUwMiA0Mi41MDIgMCAwMDM2LjMxLTIwbDM0IDIwLjI4Yy0xNS4zMDcgMjMuOTU1LTQxLjkwMiAzOC40MzEtNzAuMzMgMzguMjhDMzYuNjMgMTYyLjM0IDAgMTI1LjY2IDAgODEuNTR6IiBmaWxsPSIjMDA1NkQyIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=") 
+                    if ($instituteName == 'Coursera')
+                      $institute = "images/coursera-logo.svg";
+                    else
+                      $institute = "images/codecademy_logo.webp";
+
+                    $otherDetails = str_replace('Â', '', $otherDetails);
+                    if (isset($_SESSION['StudentId'])) {
+                      $nameUrl = "openCourse.php?courseId=" . $courseId . "& url=" . $nameUrl;
+
+                    }
+
+
+
+                    // HTML template
+                    $template = '
+                    <div class="col-md-4 ftco-animate" >
+										<div class="project-wrap bg-white" style=""border: 1px solid #000";>
+                    <a href="%s" class="img" style="background-image: url(%s);
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    width: 300px;
+                    height: 200px;">
+                    <span class="price">%s</span>
+                    </a>
+                    <div class="text p-4">
+                    <h3><a href="%s">%s</a></h3>
+                    <p class="institute"><a href="%s">%s</a></p>
+                    <p class="description">%s</p>
+                    <p class="otherDetails"><span>%s</span></p>
+                    <p class="rating"> <span>%s</span></p>
+                    
+                    </div>
+										</div>
+                    </div>
+                    ';
+
+                    // Insert dynamic data into the template
+                    $html = sprintf($template, $nameUrl, $institute, $type, $nameUrl, $name, $nameUrl, $instituteName, $skills, $otherDetails, $rating);
+
+                    // Output the HTML
+                    echo $html;
+                  }
+                }
+              }
+            }
+          } catch (Exception $e) {
+          }
+        }
+        else {
+          echo "<h3 class=\"mb-4 justify-content-center\">Login to view History</h3>";
+        }
+
+        
+        ?>
+        
       </div>
     </div>
   </section>
@@ -577,9 +591,12 @@
           <div class="w-100 mb-4 mb-md-0">
             <span class="subheading">Welcome to CoursPresso</span>
             <h2 class="mb-4">We Are CoursPresso A course comparison website</h2>
-            <p>We offer an interactive way to get rid of the hassle of searching for the course that is just right for you!</p>
-            <p>Abundance of choices often causes confusion and this confusion leads to inefficiency, especially while trying to learn. So we help you tackle this problem. 
-                Just Search courses according to your interest, filter them according to your preference and compare them to find the best deal.</p>
+            <p>We offer an interactive way to get rid of the hassle of searching for the course that is just right for
+              you!</p>
+            <p>Abundance of choices often causes confusion and this confusion leads to inefficiency, especially while
+              trying to learn. So we help you tackle this problem.
+              Just Search courses according to your interest, filter them according to your preference and compare them
+              to find the best deal.</p>
             <div class="d-flex video-image align-items-center mt-md-4">
               <a href="#" class="video img d-flex align-items-center justify-content-center"
                 style="background-image: url(images/about.jpg);">
@@ -597,7 +614,8 @@
                 </div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Top Quality Content</h3>
-                  <p>We pride ourselves on delivering high-quality content that is carefully curated to meet the needs of our users.</p>
+                  <p>We pride ourselves on delivering high-quality content that is carefully curated to meet the needs
+                    of our users.</p>
                 </div>
               </div>
             </div>
@@ -607,7 +625,8 @@
                     class="flaticon-instructor"></span></div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Highly Skilled Instructor</h3>
-                  <p>We take pride in connecting learners with highly skilled instructors who bring a wealth of expertise and knowledge to their respective courses.</p>
+                  <p>We take pride in connecting learners with highly skilled instructors who bring a wealth of
+                    expertise and knowledge to their respective courses.</p>
                 </div>
               </div>
             </div>
@@ -627,7 +646,8 @@
                     class="flaticon-browser"></span></div>
                 <div class="media-body">
                   <h3 class="heading mb-3">Get Certified</h3>
-                  <p>We offer you the opportunity to enhance your professional credentials and expand your knowledge by earning certifications.</p>
+                  <p>We offer you the opportunity to enhance your professional credentials and expand your knowledge by
+                    earning certifications.</p>
                 </div>
               </div>
             </div>
@@ -738,7 +758,7 @@
           <div class="ftco-footer-widget pt-md-5 mb-4">
             <h2 class="ftco-heading-2">Recent Courses</h2>
             <ul class="list-unstyled">
-               <li><a href="course.php?category=web%20development" class="py-2 d-block">Web Development</a></li>
+              <li><a href="course.php?category=web%20development" class="py-2 d-block">Web Development</a></li>
               <li><a href="course.php?category=mobile%20development" class="py-2 d-block">Android Development</a></li>
               <li><a href="course.php?category=algorithm" class="py-2 d-block">Algorithms</a></li>
               <li><a href="course.php?category=data%20analysis" class="py-2 d-block">Data Science</a></li>
