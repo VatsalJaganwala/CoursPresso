@@ -31,11 +31,13 @@
       // hide the login form on page load
       $("#login-form").hide();
       $("#signout-button").hide();
+      $("#search-form").hide();
       <?php
       session_start();
       if (isset($_SESSION['StudentId'])) {
         echo "$(\"#signup-form\").hide();";
         echo "$(\"#signout-button\").show();";
+        echo '$("#search-form").show();';
       }
       ?>
 
@@ -52,11 +54,12 @@
       });
     });
   </script>
+  
 
 </head>
 
 <body>
-  
+
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
@@ -80,7 +83,8 @@
           <!-- <li class="nav-item"><a href="instructor.html" class="nav-link">Instructor</a></li> -->
           <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
           <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-          <li class="nav-item " id="signout-button"><a href="signout.php" class="nav-link">Sign Out</a></li></ul>
+          <li class="nav-item " id="signout-button"><a href="signout.php" class="nav-link">Sign Out</a></li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -151,6 +155,19 @@
               </form>
               <button class="btn btn-link btn-block mt-2" id="signup-btn">Don't have an account? Sign up</button>
             </div>
+            <div class="login-wrap p-4 p-md-5" id="search-form">
+              <h3 class="mb-4">Search Courses</h3>
+              <form action="course.php" method="get" class="search-form">
+                <div class="form-group">
+                  <label class="label" for="search" name="search">Search</label>
+                  <input type="text" class="form-control" id="category" name="category" placeholder="Enter your search"
+                    required>
+                </div>
+                <div class="form-group d-flex justify-content-end mt-4">
+                  <button type="submit" class="btn btn-primary submit">Search</button>
+                </div>
+              </form>
+            </div>
         </div>
   </section>
 
@@ -164,7 +181,8 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-md-3 col-lg-2">
-          <a href="course.php?category=web%20development" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=web%20development"
+            class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/webdev.jpg);">
             <div class="text w-100 text-center">
               <h3>Web Development</h3>
@@ -172,7 +190,8 @@
           </a>
         </div>
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=mobile%20development"
+            class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/androiddev.jpg);">
             <div class="text w-100 text-center">
               <h3>Android Development</h3>
@@ -180,7 +199,8 @@
           </a>
         </div>
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=algorithm"
+            class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/algo.webp);">
             <div class="text w-100 text-center">
               <h3>Algorithms</h3>
@@ -188,7 +208,8 @@
           </a>
         </div>
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=data%20analysis"
+            class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/datasci.webp);">
             <div class="text w-100 text-center">
               <h3>Data Science</h3>
@@ -196,7 +217,7 @@
           </a>
         </div>
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=ai" class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/ai.webp);">
             <div class="text w-100 text-center">
               <h3>AI &amp; ML</h3>
@@ -204,10 +225,11 @@
           </a>
         </div>
         <div class="col-md-3 col-lg-2">
-          <a href="#" class="course-category img d-flex align-items-center justify-content-center"
+          <a href="course.php?category=cybersecurity"
+            class="course-category img d-flex align-items-center justify-content-center"
             style="background-image: url(images/iot.jpg)">
             <span class="text w-100 text-center">
-              <h3>IoT</h3>
+              <h3>Cybersecurity</h3>
             </span>
           </a>
         </div>

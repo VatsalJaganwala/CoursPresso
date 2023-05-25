@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="CoursPresso">
+<html lang="en">
 
 <head>
 	<title>CoursPresso-A course comparison website</title>
@@ -22,91 +22,13 @@
 
 	<link rel="stylesheet" href="css/flaticon.css">
 	<link rel="stylesheet" href="css/style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-
-	<script>
-		var app = angular.module('CoursPresso', []);
-
-		app.controller('courseController', function ($scope, $http) {
-			$scope.sortBy = '';
-			$scope.filterBy = '';
-
-
-			$scope.setSortBy = function (sortOption) {
-				$scope.sortBy = sortOption;
-			};
-
-			$scope.setFilterBy = function (filterOption) {
-				$scope.filterBy = filterOption;
-			};
-
-			// Function to set the institute filter
-			$scope.setInstituteFilter = function (institute) {
-				$scope.instituteFilter = institute;
-			};
-		});
-	</script>
 
 </head>
 
-<body ng-controller="courseController">
-	<div>
-
-		<?php
-		if (isset($_GET['category'])) {
-			$selectedCategory = $_GET['category'];
-			// echo "Selected Category: " . $selectedCategory;
-			$sql = "SELECT * FROM `coursedata` WHERE category = '$selectedCategory'";
-		} else {
-			$sql = "SELECT * FROM `coursedata`";
-		}
-
-
-
-		$servername = "localhost";
-		$username = "root";
-		$password = "";
-		$database = "vatsal";
-		try {
-			$conn = mysqli_connect($servername, $username, $password, $database);
-			error_log("Connection established");
-		} catch (Exception $e) {
-			error_log("Error connecting to database: " . $e->$getMessage);
-		}
-		try {
-
-			$result = mysqli_query($conn, $sql);
-			if ($result->num_rows > 0) {
-				while ($row = $result->fetch_assoc()) {
-					if ($row['type'] != 'Free course')
-						$row['type'] = 'See Plans';
-					if ($row['rating'] == '0')
-						$row['rating'] = null;
-					elseif (is_numeric($row['rating']) && intval($row['rating']) == $row['rating'])
-						$row['rating'] = $row['rating'] . " Lessons";
-					else
-						$row['rating'] = "Rating: " . $row['rating'] . "/5";
-					if ($row['institute'] == "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZpZXdCb3g9IjAgMCAxMTU1IDE2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiPjxwYXRoIGQ9Ik0xNTkuNzUgODEuNTRjMC00NC40OSAzNi42My04MC40NyA4Mi40My04MC40NyA0Ni4xMiAwIDgyLjc2IDM2IDgyLjc2IDgwLjQ3IDAgNDQuMTYtMzYuNjQgODAuOC04Mi43NiA4MC44LTQ1LjggMC04Mi40My0zNi42OC04Mi40My04MC44em0xMjUuNjEgMGMwLTIyLjI0LTE5LjMtNDEuODctNDMuMTgtNDEuODctMjMuNTUgMC00Mi44NSAxOS42My00Mi44NSA0MS44NyAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yIDIzLjkyIDAgNDMuMTgtMTkuNjMgNDMuMTgtNDIuMnptNzA1LjYzIDEuMzFjMC00OC43NCAzOS41OC04MS43OCA3NS41Ny04MS43OCAyNC41MyAwIDM4LjYgNy41MiA0OC4wOCAyMS45MmwzLjc3LTE5aDM2Ljc5djE1NS40aC0zNi43OWwtNC43NS0xNmMtMTAuNzkgMTEuNzgtMjQuMjEgMTktNDcuMSAxOS0zNS4zMy0uMDUtNzUuNTctMzEuMTMtNzUuNTctNzkuNTR6bTEyNS42MS0uMzNjLS4wOS0yMy41MjctMTkuNDctNDIuODM1LTQzLTQyLjgzNS0yMy41OSAwLTQzIDE5LjQxMS00MyA0M3YuMTY1YzAgMjEuNTkgMTkuMyA0MC44OSA0Mi44NiA0MC44OSAyMy44NSAwIDQzLjE0LTE5LjMgNDMuMTQtNDEuMjJ6TTk0NS43OCAyMlY0aC00MC4yM3YxNTUuMzloNDAuMjNWNzUuNjZjMC0yNS4xOSAxMi40NC0zOC4yNyAzNC0zOC4yNyAxLjQzIDAgMi43OS4xIDQuMTIuMjNMOTkxLjM2LjExYy0yMC45Ny4xMS0zNi4xNyA3LjMtNDUuNTggMjEuODl6bS00MDQuMjcuMDF2LTE4bC00MC4yMy4wOS4zNCAxNTUuMzcgNDAuMjMtLjA5LS4yMi04My43MmMtLjA2LTI1LjE4IDEyLjM1LTM4LjI5IDMzLjkzLTM4LjM0IDEuMzc2LjAwNCAyLjc1Mi4wODEgNC4xMi4yM0w1ODcuMSAwYy0yMSAuMTctMzYuMjIgNy4zOS00NS41OSAyMi4wMXpNMzM4Ljg4IDk5LjJWNC4wMWg0MC4yMlY5NC4zYzAgMTkuOTUgMTEuMTIgMzEuNzMgMzAuNDIgMzEuNzMgMjEuNTkgMCAzNC0xMy4wOSAzNC0zOC4yOFY0LjAxaDQwLjI0djE1NS4zOGgtNDAuMjF2LTE4Yy05LjQ4IDE0LjcyLTI0Ljg2IDIxLjkyLTQ2LjEyIDIxLjkyLTM1Ljk4LjAxLTU4LjU1LTI2LjE2LTU4LjU1LTY0LjExem0zOTEuNzQtMTcuNDhjLjA5LTQzLjUxIDMxLjIzLTgwLjc0IDgwLjYyLTgwLjY1IDQ1LjguMDkgNzguMTEgMzYuNzggNzggODAgLjAxIDQuMjczLS4zMyA4LjU0LTEgMTIuNzZsLTExOC40MS0uMjJjNC41NCAxOC42NSAxOS44OSAzMi4wOSA0My4xMiAzMi4xNCAxNC4wNiAwIDI5LjEyLTUuMTggMzguMy0xNi45NGwyNy40NCAyMmMtMTQuMTEgMTkuOTMtMzkgMzEuNjYtNjUuNDggMzEuNjEtNDYuNzUtLjE2LTgyLjY3LTM1LjIzLTgyLjU5LTgwLjd6bTExOC4xMi0xNi4xNGMtMi4yNi0xNS43LTE4LjU5LTI3Ljg0LTM3Ljg5LTI3Ljg3LTE4LjY1IDAtMzMuNzEgMTEuMDYtMzkuNjMgMjcuNzNsNzcuNTIuMTR6bS0yNjEuNCA1OS45NGwzNS43Ni0xOC43MmM1LjkxIDEyLjgxIDE3LjczIDIwLjM2IDM0LjQ4IDIwLjM2IDE1LjQzIDAgMjEuMzQtNC45MiAyMS4zNC0xMS44MiAwLTI1LTg0LjcxLTkuODUtODQuNzEtNjcgMC0zMS41MiAyNy41OC00OC4yNiA2MS43Mi00OC4yNiAyNS45NCAwIDQ4LjkyIDExLjQ5IDYxLjQgMzIuODNsLTM1LjQ0IDE4Ljc1Yy01LjI1LTEwLjUxLTE1LjEtMTYuNDItMjcuNTgtMTYuNDItMTIuMTQgMC0xOC4wNiA0LjI3LTE4LjA2IDExLjQ5IDAgMjQuMyA4NC43MSA4Ljg3IDg0LjcxIDY3IDAgMzAuMjEtMjQuNjIgNDguNTktNjQuMzUgNDguNTktMzMuODItLjAzLTU3LjQ2LTExLjE5LTY5LjI3LTM2Ljh6TTAgODEuNTRDMCAzNi43MyAzNi42My43NCA4Mi40My43NGMyNy45NDctLjE5NiA1NC4xODIgMTMuNzM3IDY5LjY3IDM3bC0zNC4zNCAxOS45MmE0Mi45NzIgNDIuOTcyIDAgMDAtMzUuMzMtMTguMzJjLTIzLjU1IDAtNDIuODUgMTkuNjMtNDIuODUgNDIuMiAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yYTQyLjUwMiA0Mi41MDIgMCAwMDM2LjMxLTIwbDM0IDIwLjI4Yy0xNS4zMDcgMjMuOTU1LTQxLjkwMiAzOC40MzEtNzAuMzMgMzguMjhDMzYuNjMgMTYyLjM0IDAgMTI1LjY2IDAgODEuNTR6IiBmaWxsPSIjMDA1NkQyIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=")
-						$row['institute'] = "img/coursera-logo.svg";
-					if ($row['institute'] == "img/coursera-logo.svg")
-						$row['institute_name'] = "Coursera";
-					else
-						$row['institute_name'] = "Codecademy";
-					$row['other_details'] = str_replace('Â', '', $row['other_details']);
-					$rows[] = $row;
-				}
-
-
-				shuffle($rows);
-				$json_courses = json_encode($rows);
-				echo "<script>var courseData = $json_courses</script>";
-				$conn->close();
-
-			}
-		} catch (Exception $e) {
-		}
-		?>
-	</div>
+<body>
+	<?php
+	session_start();
+	?>
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
@@ -120,7 +42,7 @@
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
 					<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-					<li class="nav-item active"><a href="course.php" class="nav-link">Course</a></li>
+					<li class="nav-item active"><a href="course.html" class="nav-link">Course</a></li>
 					<!-- <li class="nav-item"><a href="instructor.html" class="nav-link">Instructor</a></li> -->
 					<!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
 					<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -136,9 +58,16 @@
 			<div class="row no-gutters slider-text align-items-end justify-content-center">
 				<div class="col-md-9 ftco-animate pb-5 text-center">
 					<p class="breadcrumbs"><span class="mr-2"><a href="index.php">Home <i
-									class="fa fa-chevron-right"></i></a></span> <span>Course Lists <i
+									class="fa fa-chevron-right"></i></a></span> <span>courses <i
 								class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-0 bread">Course Lists</h1>
+					
+					<?php
+					if (isset($_GET['category'])) {
+						$selectedCategory = $_GET['category'];
+						$selectedCategory = ucfirst(strtolower($selectedCategory));
+						echo "<h1 class=\"mb-0 bread\">$selectedCategory</h1>";
+					}
+					?>
 				</div>
 			</div>
 		</div>
@@ -152,7 +81,7 @@
 						<form action="#" class="search-form">
 							<div class="form-group">
 								<span class="icon fa fa-search"></span>
-								<input type="text" ng-model="filterBy" placeholder="Search...">
+								<input type="text" class="form-control" placeholder="Search...">
 							</div>
 						</form>
 					</div>
@@ -161,51 +90,27 @@
 						<h3 class="heading-sidebar">Course Category</h3>
 						<form action="#" class="browse-form">
 							<label for="option-category-1"><input type="checkbox" id="option-category-1" name="vehicle"
-									value="" checked> Design &amp; Illustration</label><br>
+									value="" checked> Android &amp; Development</label><br>
 							<label for="option-category-2"><input type="checkbox" id="option-category-2" name="vehicle"
 									value=""> Web Development</label><br>
 							<label for="option-category-3"><input type="checkbox" id="option-category-3" name="vehicle"
-									value=""> Programming</label><br>
+									value=""> Algorithms</label><br>
 							<label for="option-category-4"><input type="checkbox" id="option-category-4" name="vehicle"
-									value=""> Music &amp; Entertainment</label><br>
+									value=""> Data &amp; Science</label><br>
 							<label for="option-category-5"><input type="checkbox" id="option-category-5" name="vehicle"
-									value=""> Photography</label><br>
+									value=""> Artifacial Intelligence / Machine Learning</label><br>
 							<label for="option-category-6"><input type="checkbox" id="option-category-6" name="vehicle"
-									value=""> Health &amp; Fitness</label><br>
+									value=""> Cybersecurity</label><br>
 						</form>
-					</div>
-
-					<div class="sidebar-box bg-white p-4 ftco-animate">
-						<h3 class="heading-sidebar">Filter by Institute:</h3>
-
-						<div>
-							<input type="radio" name="instituteFilter" ng-model="instituteFilter" ng-value="" checked>
-							All</input><br>
-							<input type="radio" name="instituteFilter" ng-model="instituteFilter" ng-value="Coursera">
-							Coursera</input><br>
-							<input type="radio" name="instituteFilter" ng-model="instituteFilter" ng-value="Codecademy">
-							Codecademy</input><br>
-							<!-- <input type="radio" name="instituteFilter" ng-model="instituteFilter"
-								ng-value="course.institute_name" ng-repeat="course in courses | unique:'institute'"
-								ng-change="setInstituteFilter(instituteFilter)">{{course.institute_name }}</input> -->
-						</div>
 					</div>
 
 					<div class="sidebar-box bg-white p-4 ftco-animate">
 						<h3 class="heading-sidebar">Course Instructor</h3>
 						<form action="#" class="browse-form">
-							<label for="option-instructor-1"><input type="radio" id =""name="instituteFilter" ng-model="instituteFilter" ng-value="" checked>
-							All</input><br>
+							<label for="option-instructor-1"><input type="checkbox" id="option-instructor-1"
+									name="vehicle" value="" checked> Coursera</label><br>
 							<label for="option-instructor-2"><input type="checkbox" id="option-instructor-2"
-									name="vehicle" value=""> John Dee</label><br>
-							<label for="option-instructor-3"><input type="checkbox" id="option-instructor-3"
-									name="vehicle" value=""> Nathan Messy</label><br>
-							<label for="option-instructor-4"><input type="checkbox" id="option-instructor-4"
-									name="vehicle" value=""> Tony Griffin</label><br>
-							<label for="option-instructor-5"><input type="checkbox" id="option-instructor-5"
-									name="vehicle" value=""> Ben Howard</label><br>
-							<label for="option-instructor-6"><input type="checkbox" id="option-instructor-6"
-									name="vehicle" value=""> Harry Potter</label><br>
+									name="vehicle" value=""> Codecademy</label><br>
 						</form>
 					</div>
 
@@ -221,7 +126,7 @@
 						</form>
 					</div>
 
-					<div class="sidebar-box bg-white p-4 ftco-animate">
+					<!-- <div class="sidebar-box bg-white p-4 ftco-animate">
 						<h3 class="heading-sidebar">Software</h3>
 						<form action="#" class="browse-form">
 							<label for="option-software-1"><input type="checkbox" id="option-software-1" name="vehicle"
@@ -235,7 +140,7 @@
 							<label for="option-software-5"><input type="checkbox" id="option-software-5" name="vehicle"
 									value=""> HTML &amp; CSS</label><br>
 						</form>
-					</div>
+					</div> -->
 				</div>
 				<style>
 					.img {
@@ -246,168 +151,113 @@
 						height: 200px;
 					}
 				</style>
-				<script>
-					app.controller('courseController', function ($scope) {
-						$scope.courses = courseData;
-						// $scope.courses = $scope.courses.slice(0, 15);
-
-					});
-				</script>
 				<div class="col-lg-9">
 					<div class="row">
-						<div ng-repeat="course in courses | orderBy:sortBy | filter:filterBy | filter:instituteFilter"
-							class="col-md-6 d-flex align-items-stretch ftco-animate">
-							
-								<div class="project-wrap">
-									<a href="{{course.name_url}}" class="img"
-										style="background-image: url({{course.institute}});">
-										<span class="price">{{course.type}}</span>
-									</a>
-									<div class="text p-4">
+						<?php
 
-										<h3><a href="{{course.name_url}}">{{course.name}}</a></h3>
-										<p class="rating"><a href="{{course.name_url}}">{{course.institute_name}}</a>
-										</p>
-										<p class="description">><span>{{course.skills}}</span></p>
-										<p class="instructors">{{course.other_details}}</p>
-										<p class="rating">{{course.rating}}</p>
+						if (isset($_GET['category'])) {
+							$selectedCategory = $_GET['category'];
+							// echo "Selected Category: " . $selectedCategory;
+							$sql = "SELECT * FROM `coursedata` WHERE category LIKE '%$selectedCategory%' OR skills LIKE '%$selectedCategory%' OR name LIKE '%$selectedCategory%'";
+						} else {
+							$sql = "SELECT * FROM `coursedata`";
+						}
 
+						if (!isset($_SESSION['StudentId'])) {
+							$sql .= "LIMIT 6";
+						}
+
+
+
+						$servername = "localhost";
+						$username = "root";
+						$password = "";
+						$database = "vatsal";
+						try {
+							$conn = mysqli_connect($servername, $username, $password, $database);
+							error_log("Connection established");
+						} catch (Exception $e) {
+							error_log("Error connecting to database: " . $e->$getMessage);
+						}
+						try {
+
+							$result = mysqli_query($conn, $sql);
+							if ($result->num_rows > 0) {
+								while ($row = $result->fetch_assoc()) {
+									$rows[] = $row;
+								}
+
+								// Shuffle the array
+								shuffle($rows);
+
+								// Loop through each row and display the data
+								foreach ($rows as $row) {
+									// Extract data from the row
+									$name = $row["name"];
+									$nameUrl = $row["name_url"];
+									$skills = $row["skills"];
+									$otherDetails = $row["other_details"];
+									$rating = $row["rating"];
+									$institute = $row["institute"];
+									$instituteName = $row["institute_name"];
+									$type = $row["type"];
+									$category = $row["category"];
+									if ($type != 'Free course')
+										$type = 'See Plans';
+									if (is_numeric($rating) && intval($rating) == $rating)
+										$rating = $rating . " Lessons";
+									elseif ($rating == '0')
+										$rating = null;
+									else
+										$rating = "Rating: " . $rating . "/5";
+									// if($institute =="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZpZXdCb3g9IjAgMCAxMTU1IDE2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjIiPjxwYXRoIGQ9Ik0xNTkuNzUgODEuNTRjMC00NC40OSAzNi42My04MC40NyA4Mi40My04MC40NyA0Ni4xMiAwIDgyLjc2IDM2IDgyLjc2IDgwLjQ3IDAgNDQuMTYtMzYuNjQgODAuOC04Mi43NiA4MC44LTQ1LjggMC04Mi40My0zNi42OC04Mi40My04MC44em0xMjUuNjEgMGMwLTIyLjI0LTE5LjMtNDEuODctNDMuMTgtNDEuODctMjMuNTUgMC00Mi44NSAxOS42My00Mi44NSA0MS44NyAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yIDIzLjkyIDAgNDMuMTgtMTkuNjMgNDMuMTgtNDIuMnptNzA1LjYzIDEuMzFjMC00OC43NCAzOS41OC04MS43OCA3NS41Ny04MS43OCAyNC41MyAwIDM4LjYgNy41MiA0OC4wOCAyMS45MmwzLjc3LTE5aDM2Ljc5djE1NS40aC0zNi43OWwtNC43NS0xNmMtMTAuNzkgMTEuNzgtMjQuMjEgMTktNDcuMSAxOS0zNS4zMy0uMDUtNzUuNTctMzEuMTMtNzUuNTctNzkuNTR6bTEyNS42MS0uMzNjLS4wOS0yMy41MjctMTkuNDctNDIuODM1LTQzLTQyLjgzNS0yMy41OSAwLTQzIDE5LjQxMS00MyA0M3YuMTY1YzAgMjEuNTkgMTkuMyA0MC44OSA0Mi44NiA0MC44OSAyMy44NSAwIDQzLjE0LTE5LjMgNDMuMTQtNDEuMjJ6TTk0NS43OCAyMlY0aC00MC4yM3YxNTUuMzloNDAuMjNWNzUuNjZjMC0yNS4xOSAxMi40NC0zOC4yNyAzNC0zOC4yNyAxLjQzIDAgMi43OS4xIDQuMTIuMjNMOTkxLjM2LjExYy0yMC45Ny4xMS0zNi4xNyA3LjMtNDUuNTggMjEuODl6bS00MDQuMjcuMDF2LTE4bC00MC4yMy4wOS4zNCAxNTUuMzcgNDAuMjMtLjA5LS4yMi04My43MmMtLjA2LTI1LjE4IDEyLjM1LTM4LjI5IDMzLjkzLTM4LjM0IDEuMzc2LjAwNCAyLjc1Mi4wODEgNC4xMi4yM0w1ODcuMSAwYy0yMSAuMTctMzYuMjIgNy4zOS00NS41OSAyMi4wMXpNMzM4Ljg4IDk5LjJWNC4wMWg0MC4yMlY5NC4zYzAgMTkuOTUgMTEuMTIgMzEuNzMgMzAuNDIgMzEuNzMgMjEuNTkgMCAzNC0xMy4wOSAzNC0zOC4yOFY0LjAxaDQwLjI0djE1NS4zOGgtNDAuMjF2LTE4Yy05LjQ4IDE0LjcyLTI0Ljg2IDIxLjkyLTQ2LjEyIDIxLjkyLTM1Ljk4LjAxLTU4LjU1LTI2LjE2LTU4LjU1LTY0LjExem0zOTEuNzQtMTcuNDhjLjA5LTQzLjUxIDMxLjIzLTgwLjc0IDgwLjYyLTgwLjY1IDQ1LjguMDkgNzguMTEgMzYuNzggNzggODAgLjAxIDQuMjczLS4zMyA4LjU0LTEgMTIuNzZsLTExOC40MS0uMjJjNC41NCAxOC42NSAxOS44OSAzMi4wOSA0My4xMiAzMi4xNCAxNC4wNiAwIDI5LjEyLTUuMTggMzguMy0xNi45NGwyNy40NCAyMmMtMTQuMTEgMTkuOTMtMzkgMzEuNjYtNjUuNDggMzEuNjEtNDYuNzUtLjE2LTgyLjY3LTM1LjIzLTgyLjU5LTgwLjd6bTExOC4xMi0xNi4xNGMtMi4yNi0xNS43LTE4LjU5LTI3Ljg0LTM3Ljg5LTI3Ljg3LTE4LjY1IDAtMzMuNzEgMTEuMDYtMzkuNjMgMjcuNzNsNzcuNTIuMTR6bS0yNjEuNCA1OS45NGwzNS43Ni0xOC43MmM1LjkxIDEyLjgxIDE3LjczIDIwLjM2IDM0LjQ4IDIwLjM2IDE1LjQzIDAgMjEuMzQtNC45MiAyMS4zNC0xMS44MiAwLTI1LTg0LjcxLTkuODUtODQuNzEtNjcgMC0zMS41MiAyNy41OC00OC4yNiA2MS43Mi00OC4yNiAyNS45NCAwIDQ4LjkyIDExLjQ5IDYxLjQgMzIuODNsLTM1LjQ0IDE4Ljc1Yy01LjI1LTEwLjUxLTE1LjEtMTYuNDItMjcuNTgtMTYuNDItMTIuMTQgMC0xOC4wNiA0LjI3LTE4LjA2IDExLjQ5IDAgMjQuMyA4NC43MSA4Ljg3IDg0LjcxIDY3IDAgMzAuMjEtMjQuNjIgNDguNTktNjQuMzUgNDguNTktMzMuODItLjAzLTU3LjQ2LTExLjE5LTY5LjI3LTM2Ljh6TTAgODEuNTRDMCAzNi43MyAzNi42My43NCA4Mi40My43NGMyNy45NDctLjE5NiA1NC4xODIgMTMuNzM3IDY5LjY3IDM3bC0zNC4zNCAxOS45MmE0Mi45NzIgNDIuOTcyIDAgMDAtMzUuMzMtMTguMzJjLTIzLjU1IDAtNDIuODUgMTkuNjMtNDIuODUgNDIuMiAwIDIyLjU3IDE5LjMgNDIuMiA0Mi44NSA0Mi4yYTQyLjUwMiA0Mi41MDIgMCAwMDM2LjMxLTIwbDM0IDIwLjI4Yy0xNS4zMDcgMjMuOTU1LTQxLjkwMiAzOC40MzEtNzAuMzMgMzguMjhDMzYuNjMgMTYyLjM0IDAgMTI1LjY2IDAgODEuNTR6IiBmaWxsPSIjMDA1NkQyIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=") 
+									if ($instituteName == 'Coursera')
+										$institute = "images/coursera-logo.svg";
+									else
+										$institute = "images/codecademy_logo.webp";
+										$otherDetails = str_replace('Â', '',$otherDetails);
+
+
+									// HTML template
+									$template = '
+									<div class="col-md-6 d-flex align-items-stretch ftco-animate" >
+										<div class="project-wrap bg-white" style=""border: 1px solid #000";>
+											<a href="%s" class="img" style="background-image: url(%s);">
+												<span class="price">%s</span>
+											</a>
+											<div class="text p-4">
+												<h3><a href="%s">%s</a></h3>
+												<p class="institute"><a href="%s">%s</a></p>
+												<p class="description">%s</p>
+												<p class="otherDetails"><span>%s</span></p>
+												<p class="rating"> <span>%s</span></p>
+												
+											</div>
+										</div>
 									</div>
-								</div>
-						</div>
-						<!-- <div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/course-image.jpg);">
-									<span class="price">Coursera</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Introduction to Artificial Intelligence</a></h3>
-									<p class="institute">Institute: <span>Carnegie Mellon University</span></p>
-									<p class="description">This course provides an introduction to the fundamental
-										concepts and ideas underlying artificial intelligence. Topics include: problem
-										solving and search, game playing, knowledge representation and reasoning,
-										uncertainty, machine learning, natural language processing, vision, and
-										robotics.</p>
-									<p class="instructors">Instructors: <span>Dr. Manuela Veloso and Dr. Sebastian
-											Thrun</span></p>
-									<p class="rating">Rating: <span>4.8/5</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>12000</li>
-										<li class="price">$99</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/work-1.jpg);">
-									<span class="price">Software</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/work-2.jpg);">
-									<span class="price">Software</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/work-3.jpg);">
-									<span class="price">Software</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
+									';
 
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/work-4.jpg);">
-									<span class="price">Coursera</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img" style="background-image: url(images/work-5.jpg);">
-									<span class="price">Software</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 d-flex align-items-stretch ftco-animate">
-							<div class="project-wrap">
-								<a href="#" class="img"
-									style="background-image: url(https://companieslogo.com/img/orig/COUR_BIG-e3284ace.png);">
-									<span class="price">Software</span>
-								</a>
-								<div class="text p-4">
-									<h3><a href="#">Design for the web with adobe photoshop</a></h3>
-									<p class="advisor">Advisor <span>Tony Garret</span></p>
-									<ul class="d-flex justify-content-between">
-										<li><span class="flaticon-shower"></span>2300</li>
-										<li class="price">$199</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div> -->
-						<div class="row mt-5">
-							<div class="col">
-								<div class="block-27">
-									<ul>
-										<li><a href="#">&lt;</a></li>
-										<li class="active"><span>1</span></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li><a href="#">&gt;</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
+									// Insert dynamic data into the template
+									$html = sprintf($template, $nameUrl, $institute, $type, $nameUrl, $name, $nameUrl, $instituteName, $skills, $otherDetails, $rating);
+
+									// Output the HTML
+									echo $html;
+								}
+								if (!isset($_SESSION['StudentId'])) {
+									echo '<h2>To load more courses <a href="index.php">Please Login or Signin</a></h2>';
+								}
+							}
+						} catch (Exception $e) {
+						}
+
+
+
+						?>
+
+
 					</div>
 				</div>
+			</div>
 	</section>
 
 	<footer class="ftco-footer ftco-no-pt">
@@ -508,7 +358,7 @@
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 	<script src="js/google-map.js"></script>
 	<script src="js/main.js"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
 </body>
 
