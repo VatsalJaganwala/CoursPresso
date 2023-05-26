@@ -104,6 +104,7 @@
     </div>
   </div>
 
+  
   <section class="ftco-section ftco-no-pb ftco-no-pt">
     <div class="container">
       <div class="row">
@@ -170,6 +171,52 @@
             </div>
         </div>
   </section>
+
+<script>
+  // Toggle between forms (register, login, search)
+  const signupForm = document.getElementById('signup-form');
+  const loginForm = document.getElementById('login-form');
+  const searchForm = document.getElementById('search-form');
+  const loginBtn = document.getElementById('login-btn');
+  const signupBtn = document.getElementById('signup-btn');
+
+  loginBtn.addEventListener('click', () => {
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    searchForm.style.display = 'none';
+  });
+
+  signupBtn.addEventListener('click', () => {
+    signupForm.style.display = 'block';
+    loginForm.style.display = 'none';
+    searchForm.style.display = 'none';
+  });
+
+  // Form validation
+  function validateForm() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateSearchForm() {
+    const category = document.getElementById('category').value;
+
+    if (category.trim() === '') {
+      alert('Please enter a search term');
+      return false;
+    }
+
+    return true;
+  }
+</script>
+
 
   <section class="ftco-section">
     <div class="container">
