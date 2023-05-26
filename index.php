@@ -475,7 +475,7 @@
                   </p>
                   <p>Well, fret no more! We are here to help. Compare courses within seconds and make an informed
                     choice. Learn without regret!</p>
-                  <p><a href="#" class="btn btn-primary">Get in touch with us</a></p>
+                  <p><a href="contact.html" class="btn btn-primary" >Get in touch with us</a></p>
                 </div>
               </div>
             </div>

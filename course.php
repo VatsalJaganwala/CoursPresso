@@ -47,7 +47,7 @@
 					<!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
 				
 					<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-					<li class="nav-item " id="signout-button"><a href="signout.php" class="nav-link">Sign Out</a></li>
+					
 				</ul>
 			</div>
 		</div>
