@@ -89,17 +89,17 @@
 					<div class="sidebar-box bg-white p-4 ftco-animate">
 						<h3 class="heading-sidebar">Course Category</h3>
 						<form action="#" class="browse-form">
-							<label for="option-category-1"><input type="checkbox" id="option-category-1" name="vehicle"
-									value="" checked> Android &amp; Development</label><br>
-							<label for="option-category-2"><input type="checkbox" id="option-category-2" name="vehicle"
-									value=""> Web Development</label><br>
-							<label for="option-category-3"><input type="checkbox" id="option-category-3" name="vehicle"
-									value=""> Algorithms</label><br>
-							<label for="option-category-4"><input type="checkbox" id="option-category-4" name="vehicle"
-									value=""> Data &amp; Science</label><br>
-							<label for="option-category-5"><input type="checkbox" id="option-category-5" name="vehicle"
+							<label for="option-category-1"><input type="checkbox" id="androidDevelopment" name="androidDevelopment"
+									value="androidDevelopment" > Android Development</label><br>
+							<label for="webDevelopment"><input type="checkbox" id="webDevelopment" name="webDevelopment"
+									value="webDevelopment"> Web Development</label><br>
+							<label for="Algorithms"><input type="checkbox" id="Algorithms" name="Algorithms"
+									value="Algorithms"> Algorithms</label><br>
+							<label for="DataScience"><input type="checkbox" id="DataScience" name="DataScience"
+									value=""> DataScience</label><br>
+							<label for="ai"><input type="checkbox" id="ai" name="ai"
 									value=""> Artifacial Intelligence / Machine Learning</label><br>
-							<label for="option-category-6"><input type="checkbox" id="option-category-6" name="vehicle"
+							<label for="Cybersecurity"><input type="checkbox" id="Cybersecurity" name="Cybersecurity"
 									value=""> Cybersecurity</label><br>
 						</form>
 					</div>
@@ -107,22 +107,22 @@
 					<div class="sidebar-box bg-white p-4 ftco-animate">
 						<h3 class="heading-sidebar">Course Instructor</h3>
 						<form action="#" class="browse-form">
-							<label for="option-instructor-1"><input type="checkbox" id="option-instructor-1"
-									name="vehicle" value="" checked> Coursera</label><br>
-							<label for="option-instructor-2"><input type="checkbox" id="option-instructor-2"
-									name="vehicle" value=""> Codecademy</label><br>
+							<label for="Coursera"><input type="checkbox" id="Coursera"
+									name="Coursera" value="" > Coursera</label><br>
+							<label for="Codecademy"><input type="checkbox" id="Codecademy"
+									name="Codecademy" value=""> Codecademy</label><br>
 						</form>
 					</div>
 
 					<div class="sidebar-box bg-white p-4 ftco-animate">
 						<h3 class="heading-sidebar">Course Type</h3>
 						<form action="#" class="browse-form">
-							<label for="option-course-type-1"><input type="checkbox" id="option-course-type-1"
-									name="vehicle" value="" checked> Basic</label><br>
-							<label for="option-course-type-2"><input type="checkbox" id="option-course-type-2"
-									name="vehicle" value=""> Intermediate</label><br>
-							<label for="option-course-type-3"><input type="checkbox" id="option-course-type-3"
-									name="vehicle" value=""> Advanced</label><br>
+							<label for="option-course-type-1"><input type="checkbox" id="Basic"
+									name="Basic" value="Basic" checked> Basic</label><br>
+							<label for="option-course-type-2"><input type="checkbox" id="Intermediate"
+									name="Intermediate" value="Intermediate"> Intermediate</label><br>
+							<label for="option-course-type-3"><input type="checkbox" id="Advanced"
+									name="Advanced" value="Advanced"> Advanced</label><br>
 						</form>
 					</div>
 

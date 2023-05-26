@@ -53,6 +53,7 @@
           }
           try {
             $email = $_POST["email"];
+            $email = strtolower($email);
             $password = $_POST["password"];
             $password = hash('md5', $password);
           } catch (Exception $e) {
