@@ -18,7 +18,7 @@ if (isset($_GET['courseId'])) {
         // echo "<br>";
 
     }
-    $conn->query("DELETE FROM userhistory WHERE courseId = '$courseId'");
+    $conn->query("DELETE FROM userhistory WHERE courseId = '$courseId' AND studentId = '$studentId'");
     $conn->query("INSERT INTO userhistory (courseId, studentId, time) VALUES ('$courseId', '$studentId', CURRENT_TIMESTAMP)");
     echo "<script>setTimeout(function() {window.location.href = '$url';});</script>";
 
