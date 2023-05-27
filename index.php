@@ -132,7 +132,8 @@
                   <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
                 </div>
                 <div class="form-group d-flex justify-content-end mt-4">
-                  <button type="submit" class="btn btn-primary submit">SignUp</button>
+                <button type="submit" class="btn btn-primary submit" onclick="return validateForm()">SignUp</button>
+
                 </div>
               </form>
               <button class="btn btn-link btn-block mt-2" id="login-btn">Already have an account? Login</button>
@@ -215,6 +216,7 @@
 
     return true;
   }
+  
 </script>
 
 
